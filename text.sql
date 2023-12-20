@@ -13,3 +13,4 @@ CREATE TABLE `course_teacher` (
   `course_id` bigint(20) UNSIGNED NOT NULL,
   `teacher_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
