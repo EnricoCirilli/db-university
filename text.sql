@@ -12,7 +12,7 @@ WHERE credits > 10;
 3 Selezionare tutti gli studenti che hanno più di 30 anni
 SELECT *
 FROM students
-WHERE birth_date < '1993-09-01';
+WHERE date_of_birth < '1993-09-01';
 
 4 Selezionare tutti i corsi del primo semestre del primo anno di un qualsiasi corso di laurea (286)
 SELECT courses.name,
