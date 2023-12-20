@@ -1,66 +1,53 @@
-CREATE TABLE `courses` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `degree_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `period` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `year` tinyint(3) UNSIGNED NOT NULL,
-  `cfu` tinyint(3) UNSIGNED NOT NULL,
-  `website` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+1.Seleziona tutti gli studenti nati nel 1990(160)
+SELECT *
+FROM students
+WHERE birth_date BETWEEN '1990-01-01' AND '1990-12-31';
 
-CREATE TABLE `course_teacher` (
-  `course_id` bigint(20) UNSIGNED NOT NULL,
-  `teacher_id` bigint(20) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+2 Selezionare tutti i corsi che valgono più di 10 crediti (479)
 
-CREATE TABLE `departments` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `website` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `head_of_department` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+SELECT *
+FROM courses
+WHERE credits > 10;
+
+3 Selezionare tutti gli studenti che hanno più di 30 anni
+SELECT *
+FROM students
+WHERE birth_date < '1993-09-01';
+
+4 Selezionare tutti i corsi del primo semestre del primo anno di un qualsiasi corso di laurea (286)
+SELECT courses.name,
+courses.period,
+courses.year
+FROM courses
+WHERE courses.year = 1
+AND courses.period = 1;
 
 
-CREATE TABLE `exams` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `course_id` bigint(20) UNSIGNED NOT NULL,
-  `date` date NOT NULL,
-  `hour` time NOT NULL,
-  `location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+5 Selezionare tutti gli appelli d'esame che avvengono nel pomeriggio (dopo le 14) del 20/06/2020 (21)
+
+SELECT exams.date, courses.name
+FROM exams
+JOIN courses
+ON exams.course_id = courses.id
+WHERE courses.name = 'Informatica' AND exams.date = '2020-06-20';
+
+6 Selezionare tutti i corsi di laurea magistrale(38)
+
+SELECT degrees.name,
+degrees.level,
+degrees.department_id
+FROM degrees
+WHERE degrees.level = 'LM';
+
+7 da quanti dipartimenti è composta l'università? (12)
+SELECT COUNT(DISTINCT department_id) AS num_departments
+FROM departments;
 
 
-CREATE TABLE `exam_student` (
-  `exam_id` bigint(20) UNSIGNED NOT NULL,
-  `student_id` bigint(20) UNSIGNED NOT NULL,
-  `vote` tinyint(3) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+8 quanti sono gli insegnanti che non hanno un numero di telefono? (50)
+SELECT COUNT(*) AS num_teachers_without_phone_number
+FROM teachers
+WHERE phone IS NULL;
 
 
-CREATE TABLE `students` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `degree_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `surname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date_of_birth` date NOT NULL,
-  `fiscal_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `enrolment_date` date NOT NULL,
-  `registration_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-CREATE TABLE `teachers` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `surname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `office_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `office_number` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
